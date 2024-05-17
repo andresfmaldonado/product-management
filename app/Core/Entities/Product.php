@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Products extends Model
+class Product extends Model
 {
     use HasFactory;
 
@@ -16,6 +17,6 @@ class Products extends Model
      */
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Categories::class, 'product_categories', 'product_id', 'category_id');
+        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id');
     }
 }
