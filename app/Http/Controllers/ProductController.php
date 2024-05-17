@@ -37,7 +37,7 @@ class ProductController extends Controller
     public function store(CreateProductRequest $product, CreateProductUseCase $useCase)
     {
         try {
-            return $useCase->execute($product);
+            return $useCase->execute($product->validated());
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function update(int $id, UpdateProductRequest $product, UpdateProductUseCase $useCase)
     {
         try {
-            return $useCase->execute($id, $product);
+            return $useCase->execute($id, $product->validated());
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()

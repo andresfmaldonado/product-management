@@ -11,7 +11,7 @@ class CreateProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50',
-            'price' => 'required|float',
+            'price' => 'required|integer',
             'stock' => 'required|integer',
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Core\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'stock',
+        'price'
+    ];
 
     /**
      * The categories that belong to the products
