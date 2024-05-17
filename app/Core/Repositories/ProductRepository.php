@@ -9,4 +9,5 @@ interface ProductRepository {
     public function getById(int $id);
     public function create(array $product);
     public function update(int $id, array $product);
+    public function delete(int $id);
 }
