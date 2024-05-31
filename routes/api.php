@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -21,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('product')->group(function() {
+Route::prefix('product')->middleware('auth:api')->group(function() {
     Route::post('', [ProductController::class, 'store']);
     Route::get('', [ProductController::class, 'index']);
     Route::get('/{id}', [ProductController::class, 'getById']);
@@ -31,7 +32,7 @@ Route::prefix('product')->group(function() {
     Route::delete('/{id}', [ProductController::class, 'destroy']);
 });
 
-Route::prefix('category')->group(function() {
+Route::prefix('category')->middleware('auth:api')->group(function() {
     Route::post('', [CategoryController::class, 'store']);
     Route::get('', [CategoryController::class, 'index']);
     Route::get('/{id}', [CategoryController::class, 'getById']);
@@ -39,8 +40,12 @@ Route::prefix('category')->group(function() {
     Route::delete('/{id}', [CategoryController::class, 'destroy']);
 });
 
-Route::prefix('user')->group(function() {
+Route::prefix('user')->middleware('auth:api')->group(function() {
     Route::post('', [UserController::class, 'store']);
     Route::get('', [UserController::class, 'index']);
     Route::get('/{id}', [UserController::class, 'getById']);
-})
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('', [AuthController::class, 'login']);
+});
