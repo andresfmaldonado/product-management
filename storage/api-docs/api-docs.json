@@ -8,7 +8,7 @@
         "/api/auth": {
             "post": {
                 "tags": [
-                    "Authentication"
+                    "authentication"
                 ],
                 "summary": "JWT Token",
                 "description": "JWT Token",
@@ -1002,6 +1002,73 @@
                                         },
                                         "type": "object"
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/product/price-list": {
+            "get": {
+                "tags": [
+                    "product"
+                ],
+                "summary": "Get Price List",
+                "description": "Get Price List",
+                "operationId": "priceList",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer Token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "product": {
+                                                "type": "string",
+                                                "example": "bananas"
+                                            },
+                                            "price": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": "2000"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Not Authorized"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }

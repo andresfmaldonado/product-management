@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('product')->middleware('auth:api')->group(function() {
     Route::post('', [ProductController::class, 'store']);
     Route::get('', [ProductController::class, 'index']);
+    Route::get('/price-list', [ProductController::class, 'getPriceList']);
     Route::get('/{id}', [ProductController::class, 'getById']);
     Route::get('/category/{categoryId}', [ProductController::class, 'getByCategory']);
     Route::get('/price/{price}', [ProductController::class, 'getByPrice']);

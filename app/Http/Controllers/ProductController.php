@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Application\UseCases\Product\CreateProductUseCase;
 use App\Application\UseCases\Product\DeleteProductUseCase;
+use App\Application\UseCases\Product\GetAllPriceListUseCase;
 use App\Application\UseCases\Product\GetAllProductsUseCase;
 use App\Application\UseCases\Product\GetProductByIdUseCase;
 use App\Application\UseCases\Product\GetProductsByCategoryUseCase;
 use App\Application\UseCases\Product\GetProductsByPriceUseCase;
+use App\Application\UseCases\Product\UpdatePriceListUseCase;
 use App\Application\UseCases\Product\UpdateProductUseCase;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
@@ -429,10 +431,12 @@ class ProductController extends Controller
      *      )
      *  )
      */
-    public function store(CreateProductRequest $product, CreateProductUseCase $useCase)
+    public function store(CreateProductRequest $product, CreateProductUseCase $useCase, UpdatePriceListUseCase $useCasePriceList)
     {
         try {
-            return $useCase->execute($product->validated());
+            $product = $useCase->execute($product->validated());
+            $useCasePriceList->execute();
+            return $product;
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
@@ -503,10 +507,12 @@ class ProductController extends Controller
      *      )
      *  )
      */
-    public function update(int $id, UpdateProductRequest $product, UpdateProductUseCase $useCase)
+    public function update(int $id, UpdateProductRequest $product, UpdateProductUseCase $useCase, UpdatePriceListUseCase $useCasePriceList)
     {
         try {
-            return $useCase->execute($id, $product->validated());
+            $product = $useCase->execute($id, $product->validated());
+            $useCasePriceList->execute();
+            return $product;
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
@@ -556,10 +562,77 @@ class ProductController extends Controller
      *      )
      *  )
      */
-    public function destroy(int $id, DeleteProductUseCase $useCase)
+    public function destroy(int $id, DeleteProductUseCase $useCase, UpdatePriceListUseCase $useCasePriceList)
     {
         try {
-            return $useCase->execute($id);
+            $product = $useCase->execute($id);
+            $useCasePriceList->execute();
+            return $product;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/product/price-list",
+     *      operationId="priceList",
+     *      tags={"product"},
+     *      summary="Get Price List",
+     *      description="Get Price List",
+     *      @OA\Parameter(
+     *          name="Authorization",
+     *          in="header",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *          description="Bearer Token",
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="id",
+     *                      type="integer",
+     *                      example=1
+     *                  ),
+     *                  @OA\Property(
+     *                      property="product",
+     *                      type="string",
+     *                      example="bananas"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="price",
+     *                      type="float",
+     *                      example="2000"
+     *                  ),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *           @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="error",
+     *                  type="string",
+     *                  example="Not Authorized"
+     *              )
+     *          )
+     *      ),
+     * )
+     */
+    public function getPriceList(GetAllPriceListUseCase $useCase)
+    {
+        try {
+            return $useCase->execute();
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
