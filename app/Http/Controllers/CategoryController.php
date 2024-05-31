@@ -22,10 +22,10 @@ class CategoryController extends Controller
         return $useCase->execute($id);
     }
 
-    public function store(CreateCategoryRequest $product, CreateCategoryUseCase $useCase)
+    public function store(CreateCategoryRequest $category, CreateCategoryUseCase $useCase)
     {
         try {
-            return $useCase->execute($product->validated());
+            return $useCase->execute($category->validated());
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
@@ -33,10 +33,10 @@ class CategoryController extends Controller
         }
     }
 
-    public function update(int $id, UpdateCategoryRequest $product, UpdateCategoryUseCase $useCase)
+    public function update(int $id, UpdateCategoryRequest $category, UpdateCategoryUseCase $useCase)
     {
         try {
-            return $useCase->execute($id, $product->validated());
+            return $useCase->execute($id, $category->validated());
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
