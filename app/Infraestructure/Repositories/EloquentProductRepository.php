@@ -19,7 +19,10 @@ class EloquentProductRepository implements ProductRepository
 
     function getByCategory(int $categoryId)
     {
-        return Product::with('categories')->where('id', $categoryId)->get();
+        return Product::whereHas('categories', function($query) use ($categoryId) {
+            $query->where('product_categories.category_id', $categoryId);
+        })
+        ->get();
     }
 
     function getByPrice(float $price)

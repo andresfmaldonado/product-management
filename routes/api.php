@@ -26,8 +26,8 @@ Route::prefix('product')->middleware('auth:api')->group(function() {
     Route::post('', [ProductController::class, 'store']);
     Route::get('', [ProductController::class, 'index']);
     Route::get('/{id}', [ProductController::class, 'getById']);
-    Route::post('/category', [ProductController::class, 'getByCategory']);
-    Route::post('/price', [ProductController::class, 'getByPrice']);
+    Route::get('/category/{categoryId}', [ProductController::class, 'getByCategory']);
+    Route::get('/price/{price}', [ProductController::class, 'getByPrice']);
     Route::put('/{id}', [ProductController::class, 'update']);
     Route::delete('/{id}', [ProductController::class, 'destroy']);
 });
